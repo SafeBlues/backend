@@ -31,26 +31,10 @@ class SafeBluesAdminServicer(sb_pb2_grpc.SafeBluesAdminServicer):
         self._Session = Session
 
     def NewStrand(self, request, context):
-        strand = request
         with session_scope(self._Session) as session:
-            s = Strand(
-                start_time=strand.start_time.ToDatetime(),
-                end_time=strand.end_time.ToDatetime(),
-                seeding_probability=strand.seeding_probability,
-                infection_probability=strand.infection_probability,
-                incubation_period_days=strand.incubation_period_days,
-                infectious_period_days=strand.infectious_period_days
-            )
+            s = Strand.from_pb(request)
             session.add(s)
-            return sb_pb2.Strand(
-                strand_id=s.strand_id,
-                start_time=timestamp_from_datetime(s.start_time),
-                end_time=timestamp_from_datetime(s.end_time),
-                seeding_probability=s.seeding_probability,
-                infection_probability=s.infection_probability,
-                incubation_period_days=s.incubation_period_days,
-                infectious_period_days=s.infectious_period_days,
-            )
+            return s.to_pb()
 
 
 class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
@@ -86,18 +70,10 @@ class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
         with session_scope(self._Session) as session:
             return sb_pb2.StrandUpdate(
                 strands=[
-                    sb_pb2.Strand(
-                        strand_id=s.strand_id,
-                        start_time=timestamp_from_datetime(s.start_time),
-                        end_time=timestamp_from_datetime(s.end_time),
-                        seeding_probability=s.seeding_probability,
-                        infection_probability=s.infection_probability,
-                        incubation_period_days=s.incubation_period_days,
-                        infectious_period_days=s.infectious_period_days,
-                    ) for s in session.query(Strand) \
-                                .filter(Strand.start_time < datetime.datetime.now() - datetime.timedelta(days=2)) \
-                                .filter(Strand.end_time > datetime.datetime.now()) \
-                                .all()
+                    s.to_pb() for s in session.query(Strand) \
+                        .filter(Strand.start_time < datetime.datetime.now() - datetime.timedelta(days=2)) \
+                        .filter(Strand.end_time > datetime.datetime.now()) \
+                        .all()
                 ]
             )
 
