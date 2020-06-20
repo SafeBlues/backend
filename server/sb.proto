@@ -4,6 +4,17 @@ import "google/protobuf/timestamp.proto";
 
 package sb;
 
+service SafeBluesAdmin {
+    rpc NewStrand(Strand) returns (Strand);
+}
+
+service SafeBlues {
+    rpc Report(InfectionReport) returns (Empty);
+    rpc Pull(Empty) returns (StrandUpdate);
+}
+
+message Empty {}
+
 message Strand {
     int64 strand_id = 1;
     google.protobuf.Timestamp start_time = 2;
