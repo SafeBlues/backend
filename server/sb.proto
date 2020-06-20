@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package sb;
+
+message Strand {
+    int64 strand_id = 1;
+    google.protobuf.Timestamp start_time = 2;
+    google.protobuf.Timestamp end_time = 3;
+    double seeding_probability = 4;
+    double infection_probability = 5;
+    double incubation_period_days = 6;
+    double infectious_period_days = 7;
+}
+
+message InfectionReport {
+    string client_id = 1;
+
+    repeated int64 current_incubating_strands = 2;
+    repeated int64 current_infected_strands = 3;
+    repeated int64 current_removed_strands = 4;
+}
+
+message StrandUpdate {
+    repeated Strand strands = 1;
+}
