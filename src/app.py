@@ -83,7 +83,7 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 
 server = grpc.server(futures.ThreadPoolExecutor(1))
-server.add_insecure_port("[::]:5858")
+server.add_insecure_port("localhost:5858")
 sb_pb2_grpc.add_SafeBluesAdminServicer_to_server(SafeBluesAdminServicer(Session), server)
 sb_pb2_grpc.add_SafeBluesServicer_to_server(SafeBluesServicer(Session), server)
 server.start()
