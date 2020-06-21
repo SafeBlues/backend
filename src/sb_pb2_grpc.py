@@ -73,6 +73,11 @@ class SafeBluesStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.PingServer = channel.unary_unary(
+                '/sb.SafeBlues/PingServer',
+                request_serializer=sb__pb2.Ping.SerializeToString,
+                response_deserializer=sb__pb2.Ping.FromString,
+                )
         self.Report = channel.unary_unary(
                 '/sb.SafeBlues/Report',
                 request_serializer=sb__pb2.InfectionReport.SerializeToString,
@@ -87,6 +92,12 @@ class SafeBluesStub(object):
 
 class SafeBluesServicer(object):
     """Missing associated documentation comment in .proto file"""
+
+    def PingServer(self, request, context):
+        """Missing associated documentation comment in .proto file"""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def Report(self, request, context):
         """Missing associated documentation comment in .proto file"""
@@ -103,6 +114,11 @@ class SafeBluesServicer(object):
 
 def add_SafeBluesServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'PingServer': grpc.unary_unary_rpc_method_handler(
+                    servicer.PingServer,
+                    request_deserializer=sb__pb2.Ping.FromString,
+                    response_serializer=sb__pb2.Ping.SerializeToString,
+            ),
             'Report': grpc.unary_unary_rpc_method_handler(
                     servicer.Report,
                     request_deserializer=sb__pb2.InfectionReport.FromString,
@@ -122,6 +138,22 @@ def add_SafeBluesServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class SafeBlues(object):
     """Missing associated documentation comment in .proto file"""
+
+    @staticmethod
+    def PingServer(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/sb.SafeBlues/PingServer',
+            sb__pb2.Ping.SerializeToString,
+            sb__pb2.Ping.FromString,
+            options, channel_credentials,
+            call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def Report(request,

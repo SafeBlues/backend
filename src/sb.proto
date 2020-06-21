@@ -9,11 +9,16 @@ service SafeBluesAdmin {
 }
 
 service SafeBlues {
+    rpc PingServer(Ping) returns (Ping);
     rpc Report(InfectionReport) returns (Empty);
     rpc Pull(Empty) returns (StrandUpdate);
 }
 
 message Empty {}
+
+message Ping {
+    int64 nonce = 1;
+}
 
 message Strand {
     int64 strand_id = 1;

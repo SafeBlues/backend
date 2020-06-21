@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x08sb.proto\x12\x02sb\x1a\x1fgoogle/protobuf/timestamp.proto\"\x07\n\x05\x45mpty\"\xf5\x01\n\x06Strand\x12\x11\n\tstrand_id\x18\x01 \x01(\x03\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1b\n\x13seeding_probability\x18\x04 \x01(\x01\x12\x1d\n\x15infection_probability\x18\x05 \x01(\x01\x12\x1e\n\x16incubation_period_days\x18\x06 \x01(\x01\x12\x1e\n\x16infectious_period_days\x18\x07 \x01(\x01\"\x8b\x01\n\x0fInfectionReport\x12\x11\n\tclient_id\x18\x01 \x01(\t\x12\"\n\x1a\x63urrent_incubating_strands\x18\x02 \x03(\x03\x12 \n\x18\x63urrent_infected_strands\x18\x03 \x03(\x03\x12\x1f\n\x17\x63urrent_removed_strands\x18\x04 \x03(\x03\"+\n\x0cStrandUpdate\x12\x1b\n\x07strands\x18\x01 \x03(\x0b\x32\n.sb.Strand25\n\x0eSafeBluesAdmin\x12#\n\tNewStrand\x12\n.sb.Strand\x1a\n.sb.Strand2Z\n\tSafeBlues\x12(\n\x06Report\x12\x13.sb.InfectionReport\x1a\t.sb.Empty\x12#\n\x04Pull\x12\t.sb.Empty\x1a\x10.sb.StrandUpdateb\x06proto3'
+  serialized_pb=b'\n\x08sb.proto\x12\x02sb\x1a\x1fgoogle/protobuf/timestamp.proto\"\x07\n\x05\x45mpty\"\x15\n\x04Ping\x12\r\n\x05nonce\x18\x01 \x01(\x03\"\xf5\x01\n\x06Strand\x12\x11\n\tstrand_id\x18\x01 \x01(\x03\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1b\n\x13seeding_probability\x18\x04 \x01(\x01\x12\x1d\n\x15infection_probability\x18\x05 \x01(\x01\x12\x1e\n\x16incubation_period_days\x18\x06 \x01(\x01\x12\x1e\n\x16infectious_period_days\x18\x07 \x01(\x01\"\x8b\x01\n\x0fInfectionReport\x12\x11\n\tclient_id\x18\x01 \x01(\t\x12\"\n\x1a\x63urrent_incubating_strands\x18\x02 \x03(\x03\x12 \n\x18\x63urrent_infected_strands\x18\x03 \x03(\x03\x12\x1f\n\x17\x63urrent_removed_strands\x18\x04 \x03(\x03\"+\n\x0cStrandUpdate\x12\x1b\n\x07strands\x18\x01 \x03(\x0b\x32\n.sb.Strand25\n\x0eSafeBluesAdmin\x12#\n\tNewStrand\x12\n.sb.Strand\x1a\n.sb.Strand2|\n\tSafeBlues\x12 \n\nPingServer\x12\x08.sb.Ping\x1a\x08.sb.Ping\x12(\n\x06Report\x12\x13.sb.InfectionReport\x1a\t.sb.Empty\x12#\n\x04Pull\x12\t.sb.Empty\x1a\x10.sb.StrandUpdateb\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -49,6 +49,38 @@ _EMPTY = _descriptor.Descriptor(
   ],
   serialized_start=49,
   serialized_end=56,
+)
+
+
+_PING = _descriptor.Descriptor(
+  name='Ping',
+  full_name='sb.Ping',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='nonce', full_name='sb.Ping.nonce', index=0,
+      number=1, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=58,
+  serialized_end=79,
 )
 
 
@@ -121,8 +153,8 @@ _STRAND = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=59,
-  serialized_end=304,
+  serialized_start=82,
+  serialized_end=327,
 )
 
 
@@ -174,8 +206,8 @@ _INFECTIONREPORT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=307,
-  serialized_end=446,
+  serialized_start=330,
+  serialized_end=469,
 )
 
 
@@ -206,14 +238,15 @@ _STRANDUPDATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=448,
-  serialized_end=491,
+  serialized_start=471,
+  serialized_end=514,
 )
 
 _STRAND.fields_by_name['start_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _STRAND.fields_by_name['end_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _STRANDUPDATE.fields_by_name['strands'].message_type = _STRAND
 DESCRIPTOR.message_types_by_name['Empty'] = _EMPTY
+DESCRIPTOR.message_types_by_name['Ping'] = _PING
 DESCRIPTOR.message_types_by_name['Strand'] = _STRAND
 DESCRIPTOR.message_types_by_name['InfectionReport'] = _INFECTIONREPORT
 DESCRIPTOR.message_types_by_name['StrandUpdate'] = _STRANDUPDATE
@@ -225,6 +258,13 @@ Empty = _reflection.GeneratedProtocolMessageType('Empty', (_message.Message,), {
   # @@protoc_insertion_point(class_scope:sb.Empty)
   })
 _sym_db.RegisterMessage(Empty)
+
+Ping = _reflection.GeneratedProtocolMessageType('Ping', (_message.Message,), {
+  'DESCRIPTOR' : _PING,
+  '__module__' : 'sb_pb2'
+  # @@protoc_insertion_point(class_scope:sb.Ping)
+  })
+_sym_db.RegisterMessage(Ping)
 
 Strand = _reflection.GeneratedProtocolMessageType('Strand', (_message.Message,), {
   'DESCRIPTOR' : _STRAND,
@@ -256,8 +296,8 @@ _SAFEBLUESADMIN = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=493,
-  serialized_end=546,
+  serialized_start=516,
+  serialized_end=569,
   methods=[
   _descriptor.MethodDescriptor(
     name='NewStrand',
@@ -282,13 +322,23 @@ _SAFEBLUES = _descriptor.ServiceDescriptor(
   index=1,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=548,
-  serialized_end=638,
+  serialized_start=571,
+  serialized_end=695,
   methods=[
+  _descriptor.MethodDescriptor(
+    name='PingServer',
+    full_name='sb.SafeBlues.PingServer',
+    index=0,
+    containing_service=None,
+    input_type=_PING,
+    output_type=_PING,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
   _descriptor.MethodDescriptor(
     name='Report',
     full_name='sb.SafeBlues.Report',
-    index=0,
+    index=1,
     containing_service=None,
     input_type=_INFECTIONREPORT,
     output_type=_EMPTY,
@@ -298,7 +348,7 @@ _SAFEBLUES = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='Pull',
     full_name='sb.SafeBlues.Pull',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_EMPTY,
     output_type=_STRANDUPDATE,

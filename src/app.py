@@ -42,6 +42,9 @@ class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
     def __init__(self, Session):
         self._Session = Session
 
+    def PingServer(self, request, context):
+        return sb_pb2.Ping(nonce=request.nonce)
+
     def Report(self, request, context):
         report = request
         with session_scope(self._Session) as session:
