@@ -2,6 +2,7 @@ import datetime
 import time
 from concurrent import futures
 from contextlib import contextmanager
+from os import environ
 
 import grpc
 import sb_pb2
@@ -84,8 +85,25 @@ Session = sessionmaker(bind=engine)
 
 server = grpc.server(futures.ThreadPoolExecutor(1))
 server.add_insecure_port("localhost:5858")
+print(f"Added insecure port on 5858")
+
+if environ.get("SB_SECURE_ENABLED", None):
+    SB_SECURE_KEY_FILE = environ.get("SB_SECURE_KEY_FILE", False)
+    SB_SECURE_CHAIN_FILE = environ.get("SB_SECURE_CHAIN_FILE", False)
+    assert SB_SECURE_KEY_FILE
+    assert SB_SECURE_CHAIN_FILE
+
+    with open(SB_SECURE_KEY_FILE, "rb") as f:
+        key_data = f.read()
+
+    with open(SB_SECURE_CHAIN_FILE, "rb") as f:
+        chain_data = f.read()
+
+    creds = grpc.ssl_server_credentials([(key_data, chain_data)])
+    server.add_secure_port("[::]:8443", creds)
+    print(f"Added secure port on 8443")
+
 sb_pb2_grpc.add_SafeBluesAdminServicer_to_server(SafeBluesAdminServicer(Session), server)
 sb_pb2_grpc.add_SafeBluesServicer_to_server(SafeBluesServicer(Session), server)
 server.start()
-print(f"Serving on 5858")
 server.wait_for_termination()
