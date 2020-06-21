@@ -71,8 +71,8 @@ class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
             return sb_pb2.StrandUpdate(
                 strands=[
                     s.to_pb() for s in session.query(Strand) \
-                        .filter(Strand.start_time < datetime.datetime.now() - datetime.timedelta(days=2)) \
-                        .filter(Strand.end_time > datetime.datetime.now()) \
+                        .filter(Strand.start_time < datetime.datetime.utcnow() - datetime.timedelta(days=2)) \
+                        .filter(Strand.end_time > datetime.datetime.utcnow()) \
                         .all()
                 ]
             )

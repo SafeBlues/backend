@@ -5,13 +5,13 @@ import sb_pb2
 import sb_pb2_grpc
 from utils import timestamp_from_datetime
 
-with grpc.insecure_channel("localhost:5858") as channel:
+with grpc.insecure_channel("api.safeblues.org:5858") as channel:
     client_stub = sb_pb2_grpc.SafeBluesStub(channel)
     admin_client_stub = sb_pb2_grpc.SafeBluesAdminStub(channel)
 
     admin_client_stub.NewStrand(sb_pb2.Strand(
-        start_time=timestamp_from_datetime(datetime.datetime.now() - datetime.timedelta(days=2)),
-        end_time=timestamp_from_datetime(datetime.datetime.now() + datetime.timedelta(days=2)),
+        start_time=timestamp_from_datetime(datetime.datetime.utcnow() - datetime.timedelta(days=2)),
+        end_time=timestamp_from_datetime(datetime.datetime.utcnow() + datetime.timedelta(days=2)),
         seeding_probability=0.1,
         infection_probability=0.5,
         incubation_period_days=2,
@@ -19,8 +19,8 @@ with grpc.insecure_channel("localhost:5858") as channel:
     ))
 
     admin_client_stub.NewStrand(sb_pb2.Strand(
-        start_time=timestamp_from_datetime(datetime.datetime.now() - datetime.timedelta(days=0)),
-        end_time=timestamp_from_datetime(datetime.datetime.now() + datetime.timedelta(days=3)),
+        start_time=timestamp_from_datetime(datetime.datetime.utcnow() - datetime.timedelta(days=0)),
+        end_time=timestamp_from_datetime(datetime.datetime.utcnow() + datetime.timedelta(days=3)),
         seeding_probability=0.2,
         infection_probability=0.1,
         incubation_period_days=1,
@@ -28,8 +28,8 @@ with grpc.insecure_channel("localhost:5858") as channel:
     ))
 
     admin_client_stub.NewStrand(sb_pb2.Strand(
-        start_time=timestamp_from_datetime(datetime.datetime.now() - datetime.timedelta(days=5)),
-        end_time=timestamp_from_datetime(datetime.datetime.now() - datetime.timedelta(days=1)),
+        start_time=timestamp_from_datetime(datetime.datetime.utcnow() - datetime.timedelta(days=5)),
+        end_time=timestamp_from_datetime(datetime.datetime.utcnow() - datetime.timedelta(days=1)),
         seeding_probability=0.2,
         infection_probability=0.1,
         incubation_period_days=1,
