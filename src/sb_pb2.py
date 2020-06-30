@@ -16,11 +16,11 @@ from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='sb.proto',
-  package='sb',
+  package='safeblues',
   syntax='proto3',
-  serialized_options=None,
+  serialized_options=b'\n\021org.safeblues.apiB\017SafeBluesProtos',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x08sb.proto\x12\x02sb\x1a\x1fgoogle/protobuf/timestamp.proto\"\x07\n\x05\x45mpty\"\x15\n\x04Ping\x12\r\n\x05nonce\x18\x01 \x01(\x03\"\xf5\x01\n\x06Strand\x12\x11\n\tstrand_id\x18\x01 \x01(\x03\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1b\n\x13seeding_probability\x18\x04 \x01(\x01\x12\x1d\n\x15infection_probability\x18\x05 \x01(\x01\x12\x1e\n\x16incubation_period_days\x18\x06 \x01(\x01\x12\x1e\n\x16infectious_period_days\x18\x07 \x01(\x01\"\x8b\x01\n\x0fInfectionReport\x12\x11\n\tclient_id\x18\x01 \x01(\t\x12\"\n\x1a\x63urrent_incubating_strands\x18\x02 \x03(\x03\x12 \n\x18\x63urrent_infected_strands\x18\x03 \x03(\x03\x12\x1f\n\x17\x63urrent_removed_strands\x18\x04 \x03(\x03\"+\n\x0cStrandUpdate\x12\x1b\n\x07strands\x18\x01 \x03(\x0b\x32\n.sb.Strand25\n\x0eSafeBluesAdmin\x12#\n\tNewStrand\x12\n.sb.Strand\x1a\n.sb.Strand2|\n\tSafeBlues\x12 \n\nPingServer\x12\x08.sb.Ping\x1a\x08.sb.Ping\x12(\n\x06Report\x12\x13.sb.InfectionReport\x1a\t.sb.Empty\x12#\n\x04Pull\x12\t.sb.Empty\x1a\x10.sb.StrandUpdateb\x06proto3'
+  serialized_pb=b'\n\x08sb.proto\x12\tsafeblues\x1a\x1fgoogle/protobuf/timestamp.proto\"\x07\n\x05\x45mpty\"\x15\n\x04Ping\x12\r\n\x05nonce\x18\x01 \x01(\x03\"\xf5\x01\n\x06Strand\x12\x11\n\tstrand_id\x18\x01 \x01(\x03\x12.\n\nstart_time\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x1b\n\x13seeding_probability\x18\x04 \x01(\x01\x12\x1d\n\x15infection_probability\x18\x05 \x01(\x01\x12\x1e\n\x16incubation_period_days\x18\x06 \x01(\x01\x12\x1e\n\x16infectious_period_days\x18\x07 \x01(\x01\"\x8b\x01\n\x0fInfectionReport\x12\x11\n\tclient_id\x18\x01 \x01(\t\x12\"\n\x1a\x63urrent_incubating_strands\x18\x02 \x03(\x03\x12 \n\x18\x63urrent_infected_strands\x18\x03 \x03(\x03\x12\x1f\n\x17\x63urrent_removed_strands\x18\x04 \x03(\x03\"2\n\x0cStrandUpdate\x12\"\n\x07strands\x18\x01 \x03(\x0b\x32\x11.safeblues.Strand2C\n\x0eSafeBluesAdmin\x12\x31\n\tNewStrand\x12\x11.safeblues.Strand\x1a\x11.safeblues.Strand2\xa6\x01\n\tSafeBlues\x12.\n\nPingServer\x12\x0f.safeblues.Ping\x1a\x0f.safeblues.Ping\x12\x36\n\x06Report\x12\x1a.safeblues.InfectionReport\x1a\x10.safeblues.Empty\x12\x31\n\x04Pull\x12\x10.safeblues.Empty\x1a\x17.safeblues.StrandUpdateB$\n\x11org.safeblues.apiB\x0fSafeBluesProtosb\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -29,7 +29,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
 
 _EMPTY = _descriptor.Descriptor(
   name='Empty',
-  full_name='sb.Empty',
+  full_name='safeblues.Empty',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -47,21 +47,21 @@ _EMPTY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=49,
-  serialized_end=56,
+  serialized_start=56,
+  serialized_end=63,
 )
 
 
 _PING = _descriptor.Descriptor(
   name='Ping',
-  full_name='sb.Ping',
+  full_name='safeblues.Ping',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='nonce', full_name='sb.Ping.nonce', index=0,
+      name='nonce', full_name='safeblues.Ping.nonce', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -79,63 +79,63 @@ _PING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=58,
-  serialized_end=79,
+  serialized_start=65,
+  serialized_end=86,
 )
 
 
 _STRAND = _descriptor.Descriptor(
   name='Strand',
-  full_name='sb.Strand',
+  full_name='safeblues.Strand',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='strand_id', full_name='sb.Strand.strand_id', index=0,
+      name='strand_id', full_name='safeblues.Strand.strand_id', index=0,
       number=1, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='start_time', full_name='sb.Strand.start_time', index=1,
+      name='start_time', full_name='safeblues.Strand.start_time', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='end_time', full_name='sb.Strand.end_time', index=2,
+      name='end_time', full_name='safeblues.Strand.end_time', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='seeding_probability', full_name='sb.Strand.seeding_probability', index=3,
+      name='seeding_probability', full_name='safeblues.Strand.seeding_probability', index=3,
       number=4, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='infection_probability', full_name='sb.Strand.infection_probability', index=4,
+      name='infection_probability', full_name='safeblues.Strand.infection_probability', index=4,
       number=5, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='incubation_period_days', full_name='sb.Strand.incubation_period_days', index=5,
+      name='incubation_period_days', full_name='safeblues.Strand.incubation_period_days', index=5,
       number=6, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='infectious_period_days', full_name='sb.Strand.infectious_period_days', index=6,
+      name='infectious_period_days', full_name='safeblues.Strand.infectious_period_days', index=6,
       number=7, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
@@ -153,42 +153,42 @@ _STRAND = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=82,
-  serialized_end=327,
+  serialized_start=89,
+  serialized_end=334,
 )
 
 
 _INFECTIONREPORT = _descriptor.Descriptor(
   name='InfectionReport',
-  full_name='sb.InfectionReport',
+  full_name='safeblues.InfectionReport',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='client_id', full_name='sb.InfectionReport.client_id', index=0,
+      name='client_id', full_name='safeblues.InfectionReport.client_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='current_incubating_strands', full_name='sb.InfectionReport.current_incubating_strands', index=1,
+      name='current_incubating_strands', full_name='safeblues.InfectionReport.current_incubating_strands', index=1,
       number=2, type=3, cpp_type=2, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='current_infected_strands', full_name='sb.InfectionReport.current_infected_strands', index=2,
+      name='current_infected_strands', full_name='safeblues.InfectionReport.current_infected_strands', index=2,
       number=3, type=3, cpp_type=2, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='current_removed_strands', full_name='sb.InfectionReport.current_removed_strands', index=3,
+      name='current_removed_strands', full_name='safeblues.InfectionReport.current_removed_strands', index=3,
       number=4, type=3, cpp_type=2, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -206,21 +206,21 @@ _INFECTIONREPORT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=330,
-  serialized_end=469,
+  serialized_start=337,
+  serialized_end=476,
 )
 
 
 _STRANDUPDATE = _descriptor.Descriptor(
   name='StrandUpdate',
-  full_name='sb.StrandUpdate',
+  full_name='safeblues.StrandUpdate',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='strands', full_name='sb.StrandUpdate.strands', index=0,
+      name='strands', full_name='safeblues.StrandUpdate.strands', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -238,8 +238,8 @@ _STRANDUPDATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=471,
-  serialized_end=514,
+  serialized_start=478,
+  serialized_end=528,
 )
 
 _STRAND.fields_by_name['start_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
@@ -255,53 +255,54 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 Empty = _reflection.GeneratedProtocolMessageType('Empty', (_message.Message,), {
   'DESCRIPTOR' : _EMPTY,
   '__module__' : 'sb_pb2'
-  # @@protoc_insertion_point(class_scope:sb.Empty)
+  # @@protoc_insertion_point(class_scope:safeblues.Empty)
   })
 _sym_db.RegisterMessage(Empty)
 
 Ping = _reflection.GeneratedProtocolMessageType('Ping', (_message.Message,), {
   'DESCRIPTOR' : _PING,
   '__module__' : 'sb_pb2'
-  # @@protoc_insertion_point(class_scope:sb.Ping)
+  # @@protoc_insertion_point(class_scope:safeblues.Ping)
   })
 _sym_db.RegisterMessage(Ping)
 
 Strand = _reflection.GeneratedProtocolMessageType('Strand', (_message.Message,), {
   'DESCRIPTOR' : _STRAND,
   '__module__' : 'sb_pb2'
-  # @@protoc_insertion_point(class_scope:sb.Strand)
+  # @@protoc_insertion_point(class_scope:safeblues.Strand)
   })
 _sym_db.RegisterMessage(Strand)
 
 InfectionReport = _reflection.GeneratedProtocolMessageType('InfectionReport', (_message.Message,), {
   'DESCRIPTOR' : _INFECTIONREPORT,
   '__module__' : 'sb_pb2'
-  # @@protoc_insertion_point(class_scope:sb.InfectionReport)
+  # @@protoc_insertion_point(class_scope:safeblues.InfectionReport)
   })
 _sym_db.RegisterMessage(InfectionReport)
 
 StrandUpdate = _reflection.GeneratedProtocolMessageType('StrandUpdate', (_message.Message,), {
   'DESCRIPTOR' : _STRANDUPDATE,
   '__module__' : 'sb_pb2'
-  # @@protoc_insertion_point(class_scope:sb.StrandUpdate)
+  # @@protoc_insertion_point(class_scope:safeblues.StrandUpdate)
   })
 _sym_db.RegisterMessage(StrandUpdate)
 
 
+DESCRIPTOR._options = None
 
 _SAFEBLUESADMIN = _descriptor.ServiceDescriptor(
   name='SafeBluesAdmin',
-  full_name='sb.SafeBluesAdmin',
+  full_name='safeblues.SafeBluesAdmin',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=516,
-  serialized_end=569,
+  serialized_start=530,
+  serialized_end=597,
   methods=[
   _descriptor.MethodDescriptor(
     name='NewStrand',
-    full_name='sb.SafeBluesAdmin.NewStrand',
+    full_name='safeblues.SafeBluesAdmin.NewStrand',
     index=0,
     containing_service=None,
     input_type=_STRAND,
@@ -317,17 +318,17 @@ DESCRIPTOR.services_by_name['SafeBluesAdmin'] = _SAFEBLUESADMIN
 
 _SAFEBLUES = _descriptor.ServiceDescriptor(
   name='SafeBlues',
-  full_name='sb.SafeBlues',
+  full_name='safeblues.SafeBlues',
   file=DESCRIPTOR,
   index=1,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=571,
-  serialized_end=695,
+  serialized_start=600,
+  serialized_end=766,
   methods=[
   _descriptor.MethodDescriptor(
     name='PingServer',
-    full_name='sb.SafeBlues.PingServer',
+    full_name='safeblues.SafeBlues.PingServer',
     index=0,
     containing_service=None,
     input_type=_PING,
@@ -337,7 +338,7 @@ _SAFEBLUES = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='Report',
-    full_name='sb.SafeBlues.Report',
+    full_name='safeblues.SafeBlues.Report',
     index=1,
     containing_service=None,
     input_type=_INFECTIONREPORT,
@@ -347,7 +348,7 @@ _SAFEBLUES = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='Pull',
-    full_name='sb.SafeBlues.Pull',
+    full_name='safeblues.SafeBlues.Pull',
     index=2,
     containing_service=None,
     input_type=_EMPTY,
