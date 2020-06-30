@@ -1,4 +1,5 @@
 import datetime
+import logging
 import time
 from concurrent import futures
 from contextlib import contextmanager
@@ -12,6 +13,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from utils import timestamp_from_datetime
 
+logging.basicConfig(format="%(asctime)s.%(msecs)03d: %(process)d: %(message)s", datefmt="%F %T", level=logging.INFO)
 
 @contextmanager
 def session_scope(Session):
@@ -43,6 +45,7 @@ class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
         self._Session = Session
 
     def PingServer(self, request, context):
+        logging.info(f"Got PingServer with nonce={request.nonce}")
         return sb_pb2.Ping(nonce=request.nonce)
 
     def Report(self, request, context):
@@ -88,7 +91,7 @@ Session = sessionmaker(bind=engine)
 
 server = grpc.server(futures.ThreadPoolExecutor(1))
 server.add_insecure_port("localhost:5858")
-print(f"Added insecure port on 5858")
+logging.info(f"Added insecure port on 5858")
 
 if environ.get("SB_SECURE_ENABLED", None):
     SB_SECURE_KEY_FILE = environ.get("SB_SECURE_KEY_FILE", False)
@@ -104,7 +107,7 @@ if environ.get("SB_SECURE_ENABLED", None):
 
     creds = grpc.ssl_server_credentials([(key_data, chain_data)])
     server.add_secure_port("[::]:8443", creds)
-    print(f"Added secure port on 8443")
+    logging.info(f"Added secure port on 8443")
 
 sb_pb2_grpc.add_SafeBluesAdminServicer_to_server(SafeBluesAdminServicer(Session), server)
 sb_pb2_grpc.add_SafeBluesServicer_to_server(SafeBluesServicer(Session), server)

@@ -1,8 +1,12 @@
 syntax = "proto3";
 
+package safeblues;
+
+option java_package = "org.safeblues.api";
+option java_outer_classname = "SafeBluesProtos";
+
 import "google/protobuf/timestamp.proto";
 
-package sb;
 
 service SafeBluesAdmin {
     rpc NewStrand(Strand) returns (Strand);

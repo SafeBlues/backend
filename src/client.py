@@ -14,6 +14,8 @@ else:
 client_stub = sb_pb2_grpc.SafeBluesStub(channel)
 admin_client_stub = sb_pb2_grpc.SafeBluesAdminStub(channel)
 
+print(client_stub.PingServer(sb_pb2.Ping(nonce=12345)))
+
 admin_client_stub.NewStrand(sb_pb2.Strand(
     start_time=timestamp_from_datetime(datetime.datetime.utcnow() - datetime.timedelta(days=2)),
     end_time=timestamp_from_datetime(datetime.datetime.utcnow() + datetime.timedelta(days=2)),
