@@ -51,16 +51,16 @@ service SafeBluesStats {
 message Empty {}
 
 message StatsReq {
-    int32 strand_id = 1;
+    uint32 strand_id = 1;
 }
 
 message StatsRes {
-    int32 strand_id = 1;
+    uint32 strand_id = 1;
 
     repeated google.protobuf.Timestamp times = 2;
-    repeated int32 total_incubating_strands = 3;
-    repeated int32 total_infected_strands = 4;
-    repeated int32 total_removed_strands = 5;
+    repeated uint32 total_incubating_strands = 3;
+    repeated uint32 total_infected_strands = 4;
+    repeated uint32 total_removed_strands = 5;
 }
 
 message AllStatsRes {
@@ -68,11 +68,11 @@ message AllStatsRes {
 }
 
 message Ping {
-    int32 nonce = 1;
+    uint32 nonce = 1;
 }
 
 message Strand {
-    int32 strand_id = 1;
+    uint32 strand_id = 1;
     google.protobuf.Timestamp start_time = 2;
     google.protobuf.Timestamp end_time = 3;
     double seeding_probability = 4;
@@ -84,9 +84,9 @@ message Strand {
 message InfectionReport {
     string client_id = 1;
 
-    repeated int32 current_incubating_strands = 2;
-    repeated int32 current_infected_strands = 3;
-    repeated int32 current_removed_strands = 4;
+    repeated uint32 current_incubating_strands = 2;
+    repeated uint32 current_infected_strands = 3;
+    repeated uint32 current_removed_strands = 4;
 }
 
 message StrandUpdate {
