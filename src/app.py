@@ -90,7 +90,7 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 
 server = grpc.server(futures.ThreadPoolExecutor(1))
-server.add_insecure_port("localhost:5858")
+server.add_insecure_port("[::]:5858")
 logging.info(f"Added insecure port on 5858")
 
 if environ.get("SB_SECURE_ENABLED", None):
