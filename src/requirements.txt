@@ -1,3 +1,4 @@
+googleapis-common-protos
+grpcio
 protobuf
 sqlalchemy
-grpcio
