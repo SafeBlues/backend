@@ -1,7 +1,7 @@
 # dumb stuff
 pushd ~/sb-aws/src
 ./generate_protos.sh
-cp sb.pb ~/sb-aws/envoy
+cp sb.pb ~/sb-aws/proxy
 popd
 
 pushd ~/sb-aws/proxy
