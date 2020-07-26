@@ -39,6 +39,15 @@ class SafeBluesAdminServicer(sb_pb2_grpc.SafeBluesAdminServicer):
             session.add(s)
             return s.to_pb()
 
+    def ListStrands(self, request, context):
+        with session_scope(self._Session) as session:
+            return sb_pb2.StrandUpdate(
+                strands=[
+                    s.to_pb() for s in session.query(Strand) \
+                        .all()
+                ]
+            )
+
 
 class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
     def __init__(self, Session):
@@ -85,6 +94,37 @@ class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
             )
 
 
+class SafeBluesStatsServicer(sb_pb2_grpc.SafeBluesStatsServicer):
+    def __init__(self, Session):
+        self._Session = Session
+
+    def AllStats(self, request, context):
+        with session_scope(self._Session) as session:
+            return sb_pb2.AllStatsRes(
+                stats=[sb_pb2.StatsRes(
+                    strand_id=1,
+                    times=[timestamp_from_datetime(datetime.datetime.now())],
+                    total_incubating_strands=[5],
+                    total_infected_strands=[3],
+                    total_removed_strands=[2],
+                )]
+            )
+
+    def Stats(self, request, context):
+        with session_scope(self._Session) as session:
+            stats = (session.query(Strand)
+                .filter(Strand))
+
+            return sb_pb2.StatsRes(
+                strand_id=1,
+                times=[timestamp_from_datetime(datetime.datetime.now())],
+                total_incubating_strands=[6],
+                total_infected_strands=[3],
+                total_removed_strands=[2],
+            )
+
+
+
 engine = create_engine(f"sqlite:///db.sqlite")
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
@@ -111,5 +151,6 @@ if environ.get("SB_SECURE_ENABLED", None):
 
 sb_pb2_grpc.add_SafeBluesAdminServicer_to_server(SafeBluesAdminServicer(Session), server)
 sb_pb2_grpc.add_SafeBluesServicer_to_server(SafeBluesServicer(Session), server)
+sb_pb2_grpc.add_SafeBluesStatsServicer_to_server(SafeBluesStatsServicer(Session), server)
 server.start()
 server.wait_for_termination()
