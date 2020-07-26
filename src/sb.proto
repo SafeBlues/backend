@@ -10,7 +10,18 @@ import "google/protobuf/timestamp.proto";
 
 
 service SafeBluesAdmin {
-    rpc NewStrand(Strand) returns (Strand);
+    rpc NewStrand(Strand) returns (Strand) {
+        option (google.api.http) = {
+            post: "/admin/new"
+            body: "*"
+        };
+    }
+
+    rpc ListStrands(Empty) returns (StrandUpdate) {
+        option (google.api.http) = {
+            get: "/admin/list"
+        };
+    }
 }
 
 service SafeBlues {
