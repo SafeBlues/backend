@@ -1,2 +1,4 @@
 venv/
 db.sqlite
+*_pb2*
+sb.pb
