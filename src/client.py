@@ -20,27 +20,39 @@ admin_client_stub.NewStrand(sb_pb2.Strand(
     start_time=timestamp_from_datetime(datetime.datetime.utcnow() - datetime.timedelta(days=2)),
     end_time=timestamp_from_datetime(datetime.datetime.utcnow() + datetime.timedelta(days=2)),
     seeding_probability=0.1,
-    infection_probability=0.5,
-    incubation_period_days=2,
-    infectious_period_days=5
+    infection_probability_map_p=0.5,
+    infection_probability_map_k=0.5,
+    infection_probability_map_l=0.5,
+    incubation_period_hours_alpha=2,
+    incubation_period_hours_beta=2,
+    infectious_period_hours_alpha=5,
+    infectious_period_hours_beta=5,
 ))
 
 admin_client_stub.NewStrand(sb_pb2.Strand(
     start_time=timestamp_from_datetime(datetime.datetime.utcnow() - datetime.timedelta(days=0)),
     end_time=timestamp_from_datetime(datetime.datetime.utcnow() + datetime.timedelta(days=3)),
     seeding_probability=0.2,
-    infection_probability=0.1,
-    incubation_period_days=1,
-    infectious_period_days=4
+    infection_probability_map_p=0.1,
+    infection_probability_map_k=0.1,
+    infection_probability_map_l=0.1,
+    incubation_period_hours_alpha=1,
+    incubation_period_hours_beta=1,
+    infectious_period_hours_alpha=4,
+    infectious_period_hours_beta=4,
 ))
 
 admin_client_stub.NewStrand(sb_pb2.Strand(
     start_time=timestamp_from_datetime(datetime.datetime.utcnow() - datetime.timedelta(days=5)),
     end_time=timestamp_from_datetime(datetime.datetime.utcnow() - datetime.timedelta(days=1)),
     seeding_probability=0.2,
-    infection_probability=0.1,
-    incubation_period_days=1,
-    infectious_period_days=4
+    infection_probability_map_p=0.1,
+    infection_probability_map_k=0.1,
+    infection_probability_map_l=0.1,
+    incubation_period_hours_alpha=1,
+    incubation_period_hours_beta=1,
+    infectious_period_hours_alpha=4,
+    infectious_period_hours_beta=4,
 ))
 
 client_stub.Report(sb_pb2.InfectionReport(
