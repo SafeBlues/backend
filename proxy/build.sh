@@ -6,5 +6,5 @@ popd
 
 pushd ~/sb-aws/proxy
 docker build -t safeblues/envoy .
-docker run -p 127.0.0.1:9901:9901 -p 443:4443 safeblues/envoy
+docker run -d -p 127.0.0.1:9901:9901 -p 443:4443 safeblues/envoy
 popd
