@@ -37,6 +37,7 @@ class SafeBluesAdminServicer(sb_pb2_grpc.SafeBluesAdminServicer):
         with session_scope(self._Session) as session:
             s = Strand.from_pb(request)
             session.add(s)
+            session.commit()
             return s.to_pb()
 
     def ListStrands(self, request, context):
