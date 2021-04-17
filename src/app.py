@@ -109,7 +109,7 @@ class SafeBluesStatsServicer(sb_pb2_grpc.SafeBluesStatsServicer):
 
     def AllStats(self, request, context):
         with session_scope(self._Session) as session:
-            stats = session.query(Strand).
+            # stats = session.query(Strand).
             return sb_pb2.AllStatsRes(
                 stats=[sb_pb2.StatsRes(
                     strand_id=1,
