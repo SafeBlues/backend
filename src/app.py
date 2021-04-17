@@ -61,26 +61,34 @@ class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
     def Report(self, request, context):
         report = request
         with session_scope(self._Session) as session:
-            r = Report(
+            incubating_strands = [
+                StrandInReport(
+                    state=StrandStatus.incubating,
+                    strand_id=strand_id
+                ) for strand_id in report.current_incubating_strands]
+            for strand in incubating_strands:
+                session.add(strand)
+
+            infected_strands = [
+                StrandInReport(
+                    state=StrandStatus.infected,
+                    strand_id=strand_id
+                ) for strand_id in report.current_infected_strands]
+            for strand in infected_strands:
+                session.add(strand)
+
+            removed_strands = [
+                StrandInReport(
+                    state=StrandStatus.removed,
+                    strand_id=strand_id
+                ) for strand_id in report.current_removed_strands]
+            for strand in removed_strands:
+                session.add(strand)
+
+            session.add(Report(
                 client_id=report.client_id,
-                strands=[
-                    StrandInReport(
-                        state=StrandStatus.incubating,
-                        strand_id=strand_id
-                    ) for strand_id in report.current_incubating_strands
-                ] + [
-                    StrandInReport(
-                        state=StrandStatus.infected,
-                        strand_id=strand_id
-                    ) for strand_id in report.current_infected_strands
-                ] + [
-                    StrandInReport(
-                        state=StrandStatus.removed,
-                        strand_id=strand_id
-                    ) for strand_id in report.current_removed_strands
-                ]
-            )
-            session.add(r)
+                strands=incubating_strands + infected_strands + removed_strands
+            ))
         return sb_pb2.Empty()
 
     def Pull(self, request, context):
@@ -101,6 +109,7 @@ class SafeBluesStatsServicer(sb_pb2_grpc.SafeBluesStatsServicer):
 
     def AllStats(self, request, context):
         with session_scope(self._Session) as session:
+            stats = session.query(Strand).
             return sb_pb2.AllStatsRes(
                 stats=[sb_pb2.StatsRes(
                     strand_id=1,
