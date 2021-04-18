@@ -58,7 +58,7 @@ build:backend:
   stage: build
   script:
     - docker pull $BACKEND_RELEASE_TAG || true
-    - docker build --build-arg version=$SLUG --cache-from $BACKEND_RELEASE_TAG -t $BACKEND_TAG backend/
+    - docker build --build-arg version=$SLUG --cache-from $BACKEND_RELEASE_TAG -t $BACKEND_TAG src/
 
 
 release:proxy:
