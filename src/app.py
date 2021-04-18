@@ -16,7 +16,7 @@ from sqlalchemy.orm.session import Session
 from utils import timestamp_from_datetime
 
 logging.basicConfig(format="%(asctime)s.%(msecs)03d: %(process)d: %(message)s", datefmt="%F %T", level=logging.INFO)
-
+logger = logging.getLogger(__name__)
 
 @functools.cache
 def get_engine():
@@ -60,6 +60,7 @@ class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
         return sb_pb2.Ping(nonce=request.nonce)
 
     def Report(self, request, context):
+        logger.info(f"Processing Report from client_id={request.client_id}")
         report = request
         with session_scope() as session:
             incubating_strands = [
@@ -90,9 +91,12 @@ class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
                 client_id=report.client_id,
                 strands=incubating_strands + infected_strands + removed_strands
             ))
+
+        logger.info(f"Report received from client_id={request.client_id}: {len(incubating_strands)} incubating, {len(infected_strands)} infected, {len(removed_strands)} removed")
         return sb_pb2.Empty()
 
     def Pull(self, request, context):
+        logger.info(f"Processing Pull")
         with session_scope() as session:
             return sb_pb2.StrandUpdate(
                 strands=[
