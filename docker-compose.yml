@@ -29,4 +29,4 @@ services:
       - "./data/nginx/logs/:/var/log/nginx/"
     ports:
       - 443:443
-      - 9443:9443
+      - 8443:8443
