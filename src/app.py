@@ -12,7 +12,7 @@ import sb_pb2
 import sb_pb2_grpc
 from models import Base, Report, Strand, StrandInReport, StrandStatus
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.session import Session
 from utils import timestamp_from_datetime
 
 logging.basicConfig(format="%(asctime)s.%(msecs)03d: %(process)d: %(message)s", datefmt="%F %T", level=logging.INFO)
