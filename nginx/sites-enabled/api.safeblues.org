@@ -14,3 +14,19 @@ server {
         proxy_pass http://envoy:8888;
     }
 }
+
+server {
+    listen 8443 http2 ssl;
+
+    server_name api.safeblues.org;
+
+    access_log /var/log/nginx/api.safeblues.org.access.log;
+    error_log /var/log/nginx/api.safeblues.org.error.log;
+
+    ssl_certificate /certs/live/api.safeblues.org/fullchain.pem;
+    ssl_certificate_key /certs/live/api.safeblues.org/privkey.pem;
+
+    location / {
+        grpc_pass backend:5858;
+    }
+}
