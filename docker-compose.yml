@@ -11,7 +11,7 @@ services:
     networks:
       - postgres_backend
   backend:
-    image: registry.gitlab.com/SafeBlues/backend/backend
+    image: registry.gitlab.com/safeblues/backend/backend
     restart: always
     expose:
       - 5858
@@ -21,7 +21,7 @@ services:
       - postgres_backend
       - backend_envoy
   envoy:
-    image: registry.gitlab.com/SafeBlues/backend/proxy
+    image: registry.gitlab.com/safeblues/backend/proxy
     restart: always
     expose:
       - 8888
@@ -30,7 +30,7 @@ services:
       - backend_envoy
       - envoy_nginx
   nginx:
-    image: registry.gitlab.com/SafeBlues/backend/nginx
+    image: registry.gitlab.com/safeblues/backend/nginx
     restart: always
     env_file: nginx.prod.env
     volumes:
