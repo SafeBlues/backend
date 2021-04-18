@@ -2,3 +2,4 @@ googleapis-common-protos
 grpcio
 protobuf
 sqlalchemy
+psycopg2-binary
