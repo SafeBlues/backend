@@ -109,7 +109,7 @@ class SafeBluesStatsServicer(sb_pb2_grpc.SafeBluesStatsServicer):
 
     def AllStats(self, request, context):
         with session_scope(self._Session) as session:
-            # stats = session.query(Strand).
+            raise NotImplementedError("NI")
             return sb_pb2.AllStatsRes(
                 stats=[sb_pb2.StatsRes(
                     strand_id=1,
@@ -122,8 +122,13 @@ class SafeBluesStatsServicer(sb_pb2_grpc.SafeBluesStatsServicer):
 
     def Stats(self, request, context):
         with session_scope(self._Session) as session:
-            stats = (session.query(Strand)
-                .filter(Strand))
+            date_ = func.date_trunc("day", Report.time_received)
+
+            stats = (session.query(date_, func.sum(StrandInReport.state))
+                .join(StrandInReport, StrandInReport.report_id == Report.report_id)
+                .filter(StrandInReport.strand_id == request.strand_id)
+                .group_by(date_)
+                .all())
 
             return sb_pb2.StatsRes(
                 strand_id=1,

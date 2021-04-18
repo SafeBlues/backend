@@ -1,0 +1,83 @@
+stages:
+  - protos
+  - build
+  - release
+
+variables:
+  GIT_DEPTH: 10
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_CERTDIR: "/certs"
+  GRPC_TAG: registry.gitlab.com/couchers/grpc:latest
+  PROXY_RELEASE_TAG: $CI_REGISTRY_IMAGE/proxy:latest
+  NGINX_RELEASE_TAG: $CI_REGISTRY_IMAGE/nginx:latest
+  BACKEND_RELEASE_TAG: $CI_REGISTRY_IMAGE/backend:latest
+  SLUG: $CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+  PROXY_TAG: $CI_REGISTRY_IMAGE/proxy:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+  NGINX_TAG: $CI_REGISTRY_IMAGE/nginx:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+  BACKEND_TAG: $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+
+default:
+  image: docker
+  services:
+    - docker:19.03.12-dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+
+protos:
+  needs: []
+  stage: protos
+  image: $GRPC_TAG
+  inherit:
+    # the grpc container doesn't have docker, no need to login
+    default: false
+  script:
+    - cd src && ./generate_protos.sh
+  artifacts:
+    paths:
+      - ./
+
+
+build:proxy:
+  needs: ["protos"]
+  stage: build
+  script:
+    - docker pull $PROXY_RELEASE_TAG || true
+    - docker build --build-arg version=$SLUG --cache-from $PROXY_RELEASE_TAG -t $PROXY_TAG app/proxy/
+
+build:nginx:
+  needs: []
+  stage: build
+  script:
+    - docker pull $NGINX_RELEASE_TAG || true
+    - docker build --build-arg version=$SLUG --cache-from $NGINX_RELEASE_TAG -t $NGINX_TAG app/nginx/
+    - docker push $NGINX_TAG
+
+build:backend:
+  needs: ["protos"]
+  stage: build
+  script:
+    - docker pull $BACKEND_RELEASE_TAG || true
+    - docker build --build-arg version=$SLUG --cache-from $BACKEND_RELEASE_TAG -t $BACKEND_TAG app/backend/
+
+
+release:proxy:
+  stage: release
+  script:
+    - docker pull $PROXY_TAG
+    - docker tag $PROXY_TAG $PROXY_RELEASE_TAG
+    - docker push $PROXY_RELEASE_TAG
+
+release:nginx:
+  stage: release
+  script:
+    - docker pull $NGINX_TAG
+    - docker tag $NGINX_TAG $NGINX_RELEASE_TAG
+    - docker push $NGINX_RELEASE_TAG
+
+release:backend:
+  stage: release
+  script:
+    - docker pull $BACKEND_TAG
+    - docker tag $BACKEND_TAG $BACKEND_RELEASE_TAG
+    - docker push $BACKEND_RELEASE_TAG
