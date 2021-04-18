@@ -1,0 +1,54 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgis/postgis:13-3.2
+    restart: always
+    env_file: postgres.prod.env
+    volumes:
+      - "./data/postgres/pgdata/:/var/lib/postgresql/data/"
+    ports:
+      - 5432:5432
+    networks:
+      - postgres_backend
+  backend:
+    image: registry.gitlab.com/SafeBlues/backend/backend
+    restart: always
+    env_file: backend.prod.env
+    expose:
+      - 1751
+      - 1752
+      - 1753
+    depends_on:
+      - postgres
+    networks:
+      - postgres_backend
+      - backend_envoy
+  envoy:
+    image: registry.gitlab.com/SafeBlues/backend/proxy
+    restart: always
+    expose:
+      - 8888
+      - 9901
+    networks:
+      - backend_envoy
+      - envoy_nginx
+  nginx:
+    image: registry.gitlab.com/SafeBlues/backend/nginx
+    restart: always
+    env_file: nginx.prod.env
+    volumes:
+      - "./data/certs/:/certs/"
+      - "./data/nginx/logs/:/var/log/nginx/"
+    ports:
+      - 443:443
+    networks:
+      - envoy_nginx
+networks:
+  postgres_backend:
+    driver: bridge
+  backend_media:
+    driver: bridge
+  backend_envoy:
+    driver: bridge
+  envoy_nginx:
+    driver: bridge
