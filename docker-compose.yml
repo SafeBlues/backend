@@ -8,28 +8,18 @@ services:
       - "./data/postgres/pgdata/:/var/lib/postgresql/data/"
     ports:
       - 5432:5432
-    networks:
-      - postgres_backend
   backend:
     image: registry.gitlab.com/safeblues/backend/backend
     restart: always
     env_file: backend.prod.env
-    expose:
-      - 5858
     depends_on:
       - postgres
-    networks:
-      - postgres_backend
-      - backend_envoy
   envoy:
     image: registry.gitlab.com/safeblues/backend/proxy
     restart: always
     expose:
       - 8888
       - 9901
-    networks:
-      - backend_envoy
-      - envoy_nginx
   nginx:
     image: registry.gitlab.com/safeblues/backend/nginx
     restart: always
@@ -39,14 +29,4 @@ services:
       - "./data/nginx/logs/:/var/log/nginx/"
     ports:
       - 443:443
-    networks:
-      - envoy_nginx
-networks:
-  postgres_backend:
-    driver: bridge
-  backend_media:
-    driver: bridge
-  backend_envoy:
-    driver: bridge
-  envoy_nginx:
-    driver: bridge
+      - 9443:9443
