@@ -43,14 +43,14 @@ build:proxy:
   stage: build
   script:
     - docker pull $PROXY_RELEASE_TAG || true
-    - docker build --build-arg version=$SLUG --cache-from $PROXY_RELEASE_TAG -t $PROXY_TAG app/proxy/
+    - docker build --build-arg version=$SLUG --cache-from $PROXY_RELEASE_TAG -t $PROXY_TAG proxy/
 
 build:nginx:
   needs: []
   stage: build
   script:
     - docker pull $NGINX_RELEASE_TAG || true
-    - docker build --build-arg version=$SLUG --cache-from $NGINX_RELEASE_TAG -t $NGINX_TAG app/nginx/
+    - docker build --build-arg version=$SLUG --cache-from $NGINX_RELEASE_TAG -t $NGINX_TAG nginx/
     - docker push $NGINX_TAG
 
 build:backend:
@@ -58,7 +58,7 @@ build:backend:
   stage: build
   script:
     - docker pull $BACKEND_RELEASE_TAG || true
-    - docker build --build-arg version=$SLUG --cache-from $BACKEND_RELEASE_TAG -t $BACKEND_TAG app/backend/
+    - docker build --build-arg version=$SLUG --cache-from $BACKEND_RELEASE_TAG -t $BACKEND_TAG backend/
 
 
 release:proxy:
