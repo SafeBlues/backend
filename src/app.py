@@ -1,3 +1,5 @@
+import os
+import functools
 import datetime
 import logging
 import time
@@ -15,10 +17,15 @@ from utils import timestamp_from_datetime
 
 logging.basicConfig(format="%(asctime)s.%(msecs)03d: %(process)d: %(message)s", datefmt="%F %T", level=logging.INFO)
 
+
+@functools.cache
+def get_engine():
+    return create_engine(os.getenv("DATABASE_CONNECTION_STRING"))
+
+
 @contextmanager
-def session_scope(Session):
-    """Provide a transactional scope around a series of operations."""
-    session = Session()
+def session_scope():
+    session = Session(get_engine())
     try:
         yield session
         session.commit()
@@ -30,18 +37,15 @@ def session_scope(Session):
 
 
 class SafeBluesAdminServicer(sb_pb2_grpc.SafeBluesAdminServicer):
-    def __init__(self, Session):
-        self._Session = Session
-
     def NewStrand(self, request, context):
-        with session_scope(self._Session) as session:
+        with session_scope() as session:
             s = Strand.from_pb(request)
             session.add(s)
             session.commit()
             return s.to_pb()
 
     def ListStrands(self, request, context):
-        with session_scope(self._Session) as session:
+        with session_scope() as session:
             return sb_pb2.StrandUpdate(
                 strands=[
                     s.to_pb() for s in session.query(Strand) \
@@ -51,16 +55,13 @@ class SafeBluesAdminServicer(sb_pb2_grpc.SafeBluesAdminServicer):
 
 
 class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
-    def __init__(self, Session):
-        self._Session = Session
-
     def PingServer(self, request, context):
         logging.info(f"Got PingServer with nonce={request.nonce}")
         return sb_pb2.Ping(nonce=request.nonce)
 
     def Report(self, request, context):
         report = request
-        with session_scope(self._Session) as session:
+        with session_scope() as session:
             incubating_strands = [
                 StrandInReport(
                     state=StrandStatus.incubating,
@@ -92,7 +93,7 @@ class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
         return sb_pb2.Empty()
 
     def Pull(self, request, context):
-        with session_scope(self._Session) as session:
+        with session_scope() as session:
             return sb_pb2.StrandUpdate(
                 strands=[
                     s.to_pb() for s in session.query(Strand) \
@@ -104,11 +105,8 @@ class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
 
 
 class SafeBluesStatsServicer(sb_pb2_grpc.SafeBluesStatsServicer):
-    def __init__(self, Session):
-        self._Session = Session
-
     def AllStats(self, request, context):
-        with session_scope(self._Session) as session:
+        with session_scope() as session:
             raise NotImplementedError("NI")
             return sb_pb2.AllStatsRes(
                 stats=[sb_pb2.StatsRes(
@@ -121,7 +119,7 @@ class SafeBluesStatsServicer(sb_pb2_grpc.SafeBluesStatsServicer):
             )
 
     def Stats(self, request, context):
-        with session_scope(self._Session) as session:
+        with session_scope() as session:
             date_ = func.date_trunc("day", Report.time_received)
 
             stats = (session.query(date_, func.sum(StrandInReport.state))
@@ -140,16 +138,14 @@ class SafeBluesStatsServicer(sb_pb2_grpc.SafeBluesStatsServicer):
 
 
 
-engine = create_engine(f"sqlite:///db.sqlite")
-Base.metadata.create_all(engine)
-Session = sessionmaker(bind=engine)
+Base.metadata.create_all(get_engine())
 
 server = grpc.server(futures.ThreadPoolExecutor(1))
 server.add_insecure_port("[::]:5858")
 logging.info(f"Added insecure port on 5858")
 
-sb_pb2_grpc.add_SafeBluesAdminServicer_to_server(SafeBluesAdminServicer(Session), server)
-sb_pb2_grpc.add_SafeBluesServicer_to_server(SafeBluesServicer(Session), server)
-sb_pb2_grpc.add_SafeBluesStatsServicer_to_server(SafeBluesStatsServicer(Session), server)
+sb_pb2_grpc.add_SafeBluesAdminServicer_to_server(SafeBluesAdminServicer(), server)
+sb_pb2_grpc.add_SafeBluesServicer_to_server(SafeBluesServicer(), server)
+sb_pb2_grpc.add_SafeBluesStatsServicer_to_server(SafeBluesStatsServicer(), server)
 server.start()
 server.wait_for_termination()
