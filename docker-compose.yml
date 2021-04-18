@@ -13,7 +13,6 @@ services:
   backend:
     image: registry.gitlab.com/SafeBlues/backend/backend
     restart: always
-    env_file: backend.prod.env
     expose:
       - 5858
     depends_on:
