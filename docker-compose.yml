@@ -15,9 +15,7 @@ services:
     restart: always
     env_file: backend.prod.env
     expose:
-      - 1751
-      - 1752
-      - 1753
+      - 5858
     depends_on:
       - postgres
     networks:
@@ -27,7 +25,7 @@ services:
     image: registry.gitlab.com/SafeBlues/backend/proxy
     restart: always
     expose:
-      - 8888
+      - 4443
       - 9901
     networks:
       - backend_envoy

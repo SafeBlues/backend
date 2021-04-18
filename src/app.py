@@ -148,22 +148,6 @@ server = grpc.server(futures.ThreadPoolExecutor(1))
 server.add_insecure_port("[::]:5858")
 logging.info(f"Added insecure port on 5858")
 
-if environ.get("SB_SECURE_ENABLED", None):
-    SB_SECURE_KEY_FILE = environ.get("SB_SECURE_KEY_FILE", False)
-    SB_SECURE_CHAIN_FILE = environ.get("SB_SECURE_CHAIN_FILE", False)
-    assert SB_SECURE_KEY_FILE
-    assert SB_SECURE_CHAIN_FILE
-
-    with open(SB_SECURE_KEY_FILE, "rb") as f:
-        key_data = f.read()
-
-    with open(SB_SECURE_CHAIN_FILE, "rb") as f:
-        chain_data = f.read()
-
-    creds = grpc.ssl_server_credentials([(key_data, chain_data)])
-    server.add_secure_port("[::]:8443", creds)
-    logging.info(f"Added secure port on 8443")
-
 sb_pb2_grpc.add_SafeBluesAdminServicer_to_server(SafeBluesAdminServicer(Session), server)
 sb_pb2_grpc.add_SafeBluesServicer_to_server(SafeBluesServicer(Session), server)
 sb_pb2_grpc.add_SafeBluesStatsServicer_to_server(SafeBluesStatsServicer(Session), server)
