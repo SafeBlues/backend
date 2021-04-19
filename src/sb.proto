@@ -80,12 +80,12 @@ message Strand {
     double infection_probability_map_p = 5;
     double infection_probability_map_k = 6;
     double infection_probability_map_l = 7;
-    // alpha and beta of the gamma distribution for incubation period
-    double incubation_period_hours_alpha = 8;
-    double incubation_period_hours_beta = 9;
-    // alpha and beta of the gamma distribution for infectious period
-    double infectious_period_hours_alpha = 10;
-    double infectious_period_hours_beta = 11;
+    // mean and shape of the gamma distribution for incubation period
+    double incubation_period_mean_sec = 8;
+    double incubation_period_shape = 9;
+    // mean and shape of the gamma distribution for infectious period
+    double infectious_period_mean_sec = 10;
+    double infectious_period_shape = 11;
 }
 
 message InfectionReport {
@@ -98,4 +98,8 @@ message InfectionReport {
 
 message StrandUpdate {
     repeated Strand strands = 1;
+    // informs the app if there's a new version
+    uint32 latest_app_version = 2;
+    // if app version is strictly lower than this, disables the app
+    uint32 minimum_app_version = 3;
 }

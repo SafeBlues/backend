@@ -37,10 +37,10 @@ class Strand(Base):
     infection_probability_map_l = Column(Float, nullable=False)
     infection_probability_map_k = Column(Float, nullable=False)
 
-    incubation_period_hours_alpha = Column(Float, nullable=False)
-    incubation_period_hours_beta = Column(Float, nullable=False)
-    infectious_period_hours_alpha = Column(Float, nullable=False)
-    infectious_period_hours_beta = Column(Float, nullable=False)
+    incubation_period_mean_sec = Column(Float, nullable=False)
+    incubation_period_shape = Column(Float, nullable=False)
+    infectious_period_mean_sec = Column(Float, nullable=False)
+    infectious_period_shape = Column(Float, nullable=False)
 
     def to_pb(self) -> sb_pb2.Strand:
         return sb_pb2.Strand(
@@ -51,10 +51,10 @@ class Strand(Base):
             infection_probability_map_p=self.infection_probability_map_p,
             infection_probability_map_k=self.infection_probability_map_k,
             infection_probability_map_l=self.infection_probability_map_l,
-            incubation_period_hours_alpha=self.incubation_period_hours_alpha,
-            incubation_period_hours_beta=self.incubation_period_hours_beta,
-            infectious_period_hours_alpha=self.infectious_period_hours_alpha,
-            infectious_period_hours_beta=self.infectious_period_hours_beta,
+            incubation_period_mean_sec=self.incubation_period_mean_sec,
+            incubation_period_shape=self.incubation_period_shape,
+            infectious_period_mean_sec=self.infectious_period_mean_sec,
+            infectious_period_shape=self.infectious_period_shape,
         )
 
     @classmethod
@@ -68,10 +68,10 @@ class Strand(Base):
             infection_probability_map_p=strand.infection_probability_map_p,
             infection_probability_map_k=strand.infection_probability_map_k,
             infection_probability_map_l=strand.infection_probability_map_l,
-            incubation_period_hours_alpha=strand.incubation_period_hours_alpha,
-            incubation_period_hours_beta=strand.incubation_period_hours_beta,
-            infectious_period_hours_alpha=strand.infectious_period_hours_alpha,
-            infectious_period_hours_beta=strand.infectious_period_hours_beta,
+            incubation_period_mean_sec=strand.incubation_period_mean_sec,
+            incubation_period_shape=strand.incubation_period_shape,
+            infectious_period_mean_sec=strand.infectious_period_mean_sec,
+            infectious_period_shape=strand.infectious_period_shape,
         )
 
 class Report(Base):
