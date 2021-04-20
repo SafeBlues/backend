@@ -28,8 +28,8 @@ class Strand(Base):
 
     strand_id = Column(Integer, primary_key=True)
 
-    start_time = Column(DateTime, nullable=False)
-    end_time = Column(DateTime, nullable=False)
+    start_time = Column(DateTime(timezone=True), nullable=False)
+    end_time = Column(DateTime(timezone=True), nullable=False)
 
     seeding_probability = Column(Float, nullable=False)
 
@@ -81,6 +81,6 @@ class Report(Base):
 
     client_id = Column(String)
 
-    time_received = Column(DateTime, nullable=False, default=func.now())
+    time_received = Column(DateTime(timezone=True), nullable=False, default=func.now())
 
     strands = relationship("StrandInReport")
