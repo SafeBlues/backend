@@ -84,3 +84,5 @@ class Report(Base):
     time_received = Column(DateTime(timezone=True), nullable=False, default=func.now())
 
     strands = relationship("StrandInReport")
+
+    version_code = Column(Integer)

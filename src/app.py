@@ -89,6 +89,7 @@ class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
 
             session.add(Report(
                 client_id=report.client_id,
+                version_code=report.version_code,
                 strands=incubating_strands + infected_strands + removed_strands
             ))
 
