@@ -60,7 +60,7 @@ class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
         return sb_pb2.Ping(nonce=request.nonce)
 
     def Report(self, request, context):
-        logger.info(f"Processing Report from client_id={request.client_id}")
+        logger.info(f"Processing Report from client_id={request.client_id}, version={request.version_code}")
         report = request
         with session_scope() as session:
             incubating_strands = [
