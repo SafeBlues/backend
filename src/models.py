@@ -67,7 +67,7 @@ class Strand(Base):
         return cls(
             # NOTE: strand_id == 0 => None
             name=strand.name if strand.name else None,
-            minimum_app_version=minimum_app_version if strand.minimum_app_version != 0 else None,
+            minimum_app_version=strand.minimum_app_version if strand.minimum_app_version != 0 else None,
             strand_id=strand.strand_id if strand.strand_id != 0 else None,
             start_time=strand.start_time.ToDatetime(),
             end_time=strand.end_time.ToDatetime(),
