@@ -86,6 +86,8 @@ message Strand {
     // mean and shape of the gamma distribution for infectious period
     double infectious_period_mean_sec = 10;
     double infectious_period_shape = 11;
+
+    uint32 minimum_app_version = 12;
 }
 
 message InfectionReport {
@@ -101,6 +103,4 @@ message StrandUpdate {
     repeated Strand strands = 1;
     // informs the app if there's a new version
     uint32 latest_app_version = 2;
-    // if app version is strictly lower than this, disables the app
-    uint32 minimum_app_version = 3;
 }

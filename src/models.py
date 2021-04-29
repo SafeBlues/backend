@@ -28,6 +28,9 @@ class Strand(Base):
 
     strand_id = Column(Integer, primary_key=True)
 
+    name = Column(String, unique=True, nullable=True)
+    minimum_app_version = Column(Integer, nullable=True)
+
     start_time = Column(DateTime(timezone=True), nullable=False)
     end_time = Column(DateTime(timezone=True), nullable=False)
 
@@ -44,6 +47,7 @@ class Strand(Base):
 
     def to_pb(self) -> sb_pb2.Strand:
         return sb_pb2.Strand(
+            minimum_app_version=minimum_app_version,
             strand_id=self.strand_id,
             start_time=timestamp_from_datetime(self.start_time),
             end_time=timestamp_from_datetime(self.end_time),
@@ -61,6 +65,8 @@ class Strand(Base):
     def from_pb(cls, strand: sb_pb2.Strand):
         return cls(
             # NOTE: strand_id == 0 => None
+            name=name if strand.name else None,
+            minimum_app_version=minimum_app_version if strand.minimum_app_version != 0 else None,
             strand_id=strand.strand_id if strand.strand_id != 0 else None,
             start_time=strand.start_time.ToDatetime(),
             end_time=strand.end_time.ToDatetime(),

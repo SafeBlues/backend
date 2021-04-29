@@ -99,7 +99,11 @@ class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
     def Pull(self, request, context):
         logger.info(f"Processing Pull")
         with session_scope() as session:
-            return sb_pb2.StrandUpdate(strands=[s.to_pb() for s in session.query(Strand).all()])
+            strands = [s.to_pb() for s in session.query(Strand).all()]
+            return sb_pb2.StrandUpdate(
+                strands=strands,
+                latest_app_version=max([strand.minimum_app_version or 0 for strand in strands]),
+            )
 
 
 class SafeBluesStatsServicer(sb_pb2_grpc.SafeBluesStatsServicer):
