@@ -47,7 +47,8 @@ class Strand(Base):
 
     def to_pb(self) -> sb_pb2.Strand:
         return sb_pb2.Strand(
-            minimum_app_version=minimum_app_version,
+            name=self.name,
+            minimum_app_version=self.minimum_app_version,
             strand_id=self.strand_id,
             start_time=timestamp_from_datetime(self.start_time),
             end_time=timestamp_from_datetime(self.end_time),
