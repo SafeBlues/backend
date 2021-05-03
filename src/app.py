@@ -46,11 +46,10 @@ class SafeBluesAdminServicer(sb_pb2_grpc.SafeBluesAdminServicer):
 
     def ListStrands(self, request, context):
         with session_scope() as session:
+            strands = [s.to_pb() for s in session.query(Strand).all()]
             return sb_pb2.StrandUpdate(
-                strands=[
-                    s.to_pb() for s in session.query(Strand) \
-                        .all()
-                ]
+                strands=strands,
+                latest_app_version=max([strand.minimum_app_version or 0 for strand in strands]),
             )
 
 
