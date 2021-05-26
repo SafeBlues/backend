@@ -22,6 +22,13 @@ service SafeBluesAdmin {
             get: "/admin/list"
         };
     }
+
+    rpc SetSD(StrandSocialDistancing) returns (StrandSocialDistancing) {
+        option (google.api.http) = {
+            post: "/admin/sd/{strand_id}"
+            body: "*"
+        };
+    }
 }
 
 service SafeBlues {

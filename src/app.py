@@ -64,6 +64,25 @@ class SafeBluesAdminServicer(sb_pb2_grpc.SafeBluesAdminServicer):
     def ListStrands(self, request, context):
         return _get_strand_update()
 
+    def SetSD(self, request, context):
+        with session_scope() as session:
+            sd = (
+                session.query(StrandSocialDistancing)
+                .filter(StrandSocialDistancing.strand_id == request.strand_id)
+                .one_or_none()
+            )
+            if sd:
+                sd.social_distancing_factor = request.social_distancing_factor
+            else:
+                session.add(StrandSocialDistancing.from_pb(request))
+            session.commit()
+            new = (
+                session.query(StrandSocialDistancing)
+                .filter(StrandSocialDistancing.strand_id == request.strand_id)
+                .one()
+            )
+            return new.to_pb()
+
 
 class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
     def PingServer(self, request, context):
