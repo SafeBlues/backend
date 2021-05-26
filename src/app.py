@@ -6,6 +6,7 @@ import time
 from concurrent import futures
 from contextlib import contextmanager
 from os import environ
+from secrets import compare_digest
 
 import grpc
 from sqlalchemy import create_engine
@@ -42,6 +43,9 @@ def session_scope():
         session.close()
 
 
+secret_key = os.environ["SECRET_KEY"]
+
+
 def _get_strand_update():
     with session_scope() as session:
         strands = [s.to_pb() for s in session.query(Strand).all()]
@@ -53,8 +57,23 @@ def _get_strand_update():
         )
 
 
+def _check_key(context):
+    metadata = dict(context.invocation_metadata)
+
+    if "authorization" not in metadata:
+        context.abort(grpc.StatusCode.UNAUTHENTICATED, "Missing authorization header")
+
+    authorization = metadata["authorization"]
+    if not authorization.startswith("Bearer "):
+        context.abort(grpc.StatusCode.UNAUTHENTICATED, "Wrong format auth header")
+
+    if not compare_digest(secret_key, authorization[7:]):
+        context.abort(grpc.StatusCode.UNAUTHENTICATED, "Wrong key")
+
+
 class SafeBluesAdminServicer(sb_pb2_grpc.SafeBluesAdminServicer):
     def NewStrand(self, request, context):
+        _check_key(context)
         with session_scope() as session:
             s = Strand.from_pb(request)
             session.add(s)
@@ -65,6 +84,7 @@ class SafeBluesAdminServicer(sb_pb2_grpc.SafeBluesAdminServicer):
         return _get_strand_update()
 
     def SetSD(self, request, context):
+        _check_key(context)
         with session_scope() as session:
             sd = (
                 session.query(StrandSocialDistancing)
