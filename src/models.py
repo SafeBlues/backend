@@ -90,7 +90,9 @@ class StrandSocialDistancing(Base):
 
     id = Column(Integer, primary_key=True)
 
-    strand_id = Column(ForeignKey("strands.strand_id"), nullable=False, unique=True)
+    time = Column(DateTime(timezone=True), nullable=False, default=func.now())
+
+    strand_id = Column(ForeignKey("strands.strand_id"), nullable=False)
     social_distancing_factor = Column(Float, nullable=False)
 
     def to_pb(self) -> sb_pb2.StrandSocialDistancing:

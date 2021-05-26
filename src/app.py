@@ -49,7 +49,15 @@ secret_key = os.environ["SECRET_KEY"]
 def _get_strand_update():
     with session_scope() as session:
         strands = [s.to_pb() for s in session.query(Strand).all()]
-        sds = [s.to_pb() for s in session.query(StrandSocialDistancing).all()]
+        subq = (
+            session.query(func.max(StrandSocialDistancing.id).label("id"))
+            .group_by(StrandSocialDistancing.strand_id)
+            .subquery()
+        )
+        sds = [
+            s.to_pb()
+            for s in session.query(StrandSocialDistancing).join(subq, subq.c.id == StrandSocialDistancing.id).all()
+        ]
         return sb_pb2.StrandUpdate(
             strands=strands,
             sds=sds,
@@ -86,22 +94,10 @@ class SafeBluesAdminServicer(sb_pb2_grpc.SafeBluesAdminServicer):
     def SetSD(self, request, context):
         _check_key(context)
         with session_scope() as session:
-            sd = (
-                session.query(StrandSocialDistancing)
-                .filter(StrandSocialDistancing.strand_id == request.strand_id)
-                .one_or_none()
-            )
-            if sd:
-                sd.social_distancing_factor = request.social_distancing_factor
-            else:
-                session.add(StrandSocialDistancing.from_pb(request))
+            sd = StrandSocialDistancing.from_pb(request)
+            session.add(sd)
             session.commit()
-            new = (
-                session.query(StrandSocialDistancing)
-                .filter(StrandSocialDistancing.strand_id == request.strand_id)
-                .one()
-            )
-            return new.to_pb()
+            return sd.to_pb()
 
 
 class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
