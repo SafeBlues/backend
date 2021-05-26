@@ -100,8 +100,15 @@ message InfectionReport {
     repeated uint32 current_removed_strands = 4;
 }
 
+message StrandSocialDistancing {
+    int64 strand_id = 1;
+    double social_distancing_factor = 2;
+}
+
 message StrandUpdate {
     repeated Strand strands = 1;
     // informs the app if there's a new version
     uint32 latest_app_version = 2;
+
+    repeated StrandSocialDistancing sds = 3;
 }

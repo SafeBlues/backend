@@ -1,19 +1,21 @@
 import enum
 
-import sb_pb2
-from sqlalchemy import (Column, DateTime, Enum, Float, ForeignKey, Integer,
-                        String, Table)
+from sqlalchemy import Column, DateTime, Enum, Float, ForeignKey, Integer, String, Table
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+
+import sb_pb2
 from utils import timestamp_from_datetime
 
 Base = declarative_base()
+
 
 class StrandStatus(enum.Enum):
     incubating = 1
     infected = 2
     removed = 3
+
 
 class StrandInReport(Base):
     __tablename__ = "strands_in_report"
@@ -22,6 +24,7 @@ class StrandInReport(Base):
     state = Column(Enum(StrandStatus), nullable=False)
     report_id = Column(ForeignKey("reports.report_id"), nullable=False)
     strand_id = Column(ForeignKey("strands.strand_id"), nullable=False)
+
 
 class Strand(Base):
     __tablename__ = "strands"
@@ -80,6 +83,29 @@ class Strand(Base):
             infectious_period_mean_sec=strand.infectious_period_mean_sec,
             infectious_period_shape=strand.infectious_period_shape,
         )
+
+
+class StrandSocialDistancing(Base):
+    __tablename__ = "sds"
+
+    id = Column(Integer, primary_key=True)
+
+    strand_id = Column(ForeignKey("strands.strand_id"), nullable=False, unique=True)
+    social_distancing_factor = Column(Float, nullable=False)
+
+    def to_pb(self) -> sb_pb2.StrandSocialDistancing:
+        return sb_pb2.StrandSocialDistancing(
+            strand_id=self.strand_id,
+            social_distancing_factor=self.social_distancing_factor,
+        )
+
+    @classmethod
+    def from_pb(cls, sd: sb_pb2.StrandSocialDistancing):
+        return cls(
+            strand_id=sd.strand_id,
+            social_distancing_factor=sd.social_distancing_factor,
+        )
+
 
 class Report(Base):
     __tablename__ = "reports"
