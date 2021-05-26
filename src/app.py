@@ -67,7 +67,7 @@ def _get_strand_update():
 
 
 def _check_key(context):
-    metadata = dict(context.invocation_metadata)
+    metadata = dict(context.invocation_metadata())
 
     if "authorization" not in metadata:
         context.abort(grpc.StatusCode.UNAUTHENTICATED, "Missing authorization header")
