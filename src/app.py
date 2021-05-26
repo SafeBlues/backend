@@ -146,7 +146,7 @@ class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
 
     def Pull(self, request, context):
         logger.info(f"Processing Pull")
-        _get_strand_update()
+        return _get_strand_update()
 
 
 class SafeBluesStatsServicer(sb_pb2_grpc.SafeBluesStatsServicer):
