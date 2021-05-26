@@ -11,6 +11,7 @@ from secrets import compare_digest
 import grpc
 from sqlalchemy import create_engine
 from sqlalchemy.orm.session import Session
+from sqlalchemy.sql import func
 
 import sb_pb2
 import sb_pb2_grpc
