@@ -17,6 +17,7 @@ import sb_pb2
 import sb_pb2_grpc
 from models import Base, DebugData, Report, Strand, StrandInReport, StrandSocialDistancing, StrandStatus
 from utils import timestamp_from_datetime, to_aware_datetime
+from google.api import httpbody_pb2
 
 logging.basicConfig(
     format="%(asctime)s.%(msecs)03d: %(process)d: %(message)s",
@@ -205,6 +206,16 @@ class SafeBluesStatsServicer(sb_pb2_grpc.SafeBluesStatsServicer):
                 total_infected_strands=[3],
                 total_removed_strands=[2],
             )
+
+    def DebugInfo(self, request, context):
+        with session_scope() as session:
+            output = "experiment_id,participant_id,now,first_seen,last_seen,tx_powers,rssis,duration,distance,temporary_id,strand_ids"
+            for d in session.query(DebugData).all():
+                output += f"\"{d.experiment_id}\",\"{d.participant_id}\",\"{d.now}\",\"{d.first_seen}\",\"{d.last_seen}\",\"{d.tx_powers}\",\"{d.rssis}\",\"{d.duration}\",\"{d.distance}\",\"{d.temporary_id}\",\"{d.strand_ids}\""
+        return httpbody_pb2.HttpBody(
+            content_type="text/csv",
+            data=output,
+        )
 
 
 Base.metadata.create_all(get_engine())

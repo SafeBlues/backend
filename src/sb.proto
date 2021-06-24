@@ -58,7 +58,7 @@ service SafeBluesStats {
 
     rpc DebugInfo(Empty) returns (google.api.HttpBody) {
         option (google.api.http) = {
-            get: "/debug"
+            get: "/debug.csv"
         };
     }
 }
