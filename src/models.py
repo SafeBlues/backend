@@ -121,3 +121,21 @@ class Report(Base):
     strands = relationship("StrandInReport")
 
     version_code = Column(Integer)
+
+
+class DebugData(Base):
+    __tablename__ = "debug_data"
+
+    data_id = Column(Integer, primary_key=True)
+
+    experiment_id = Column(Integer, nullable=False)
+    participant_id = Column(String, nullable=False)
+    now = Column(DateTime(timezone=True), nullable=False)
+    first_seen = Column(DateTime(timezone=True), nullable=False)
+    last_seen = Column(DateTime(timezone=True), nullable=False)
+    tx_powers = Column(String, nullable=False)
+    rssis = Column(String, nullable=False)
+    duration = Column(Float, nullable=False)
+    distance = Column(Float, nullable=False)
+    temporary_id = Column(String, nullable=False)
+    strand_ids = Column(String, nullable=False)

@@ -15,8 +15,8 @@ from sqlalchemy.sql import func
 
 import sb_pb2
 import sb_pb2_grpc
-from models import Base, Report, Strand, StrandInReport, StrandSocialDistancing, StrandStatus
-from utils import timestamp_from_datetime
+from models import Base, DebugData, Report, Strand, StrandInReport, StrandSocialDistancing, StrandStatus
+from utils import timestamp_from_datetime, to_aware_datetime
 
 logging.basicConfig(
     format="%(asctime)s.%(msecs)03d: %(process)d: %(message)s",
@@ -147,6 +147,27 @@ class SafeBluesServicer(sb_pb2_grpc.SafeBluesServicer):
     def Pull(self, request, context):
         logger.info(f"Processing Pull")
         return _get_strand_update()
+
+    def PushDebugData(self, request, context):
+        logger.info(f"PushDebugData with {len(request.data)} data points")
+        with session_scope() as session:
+            for datum in request.data:
+                session.add(
+                    DebugData(
+                        experiment_id=datum.experiment_id,
+                        participant_id=datum.participant_id,
+                        now=to_aware_datetime(datum.now),
+                        first_seen=to_aware_datetime(datum.first_seen),
+                        last_seen=to_aware_datetime(datum.last_seen),
+                        tx_powers=",".join(map(str, datum.tx_powers)),
+                        rssis=",".join(map(str, datum.rssis)),
+                        duration=datum.duration,
+                        distance=datum.distance,
+                        temporary_id=datum.temporary_id,
+                        strand_ids=",".join(map(str, datum.strand_ids)),
+                    )
+                )
+        return sb_pb2.Empty()
 
 
 class SafeBluesStatsServicer(sb_pb2_grpc.SafeBluesStatsServicer):
