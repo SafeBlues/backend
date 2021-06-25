@@ -213,7 +213,7 @@ class SafeBluesStatsServicer(sb_pb2_grpc.SafeBluesStatsServicer):
             for d in session.query(DebugData).all():
                 output += f"\"{d.experiment_id}\",\"{d.participant_id}\",\"{d.now}\",\"{d.first_seen}\",\"{d.last_seen}\",\"{d.tx_powers}\",\"{d.rssis}\",\"{d.duration}\",\"{d.distance}\",\"{d.temporary_id.strip()}\",\"{d.strand_ids}\"\n"
         return httpbody_pb2.HttpBody(
-            content_type="text/csv",
+            content_type="text/plain",
             data=output.encode("utf8"),
         )
 
