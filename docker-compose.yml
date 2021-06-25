@@ -12,6 +12,8 @@ services:
     image: registry.gitlab.com/safeblues/backend/backend
     restart: always
     env_file: backend.prod.env
+    ports:
+      - 5432:5432
     depends_on:
       - postgres
     networks:
